@@ -1,5 +1,6 @@
 module qwtwplot
 
+ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 
 qwtwLibHandle = 0
 qwtwFigureH = 0
