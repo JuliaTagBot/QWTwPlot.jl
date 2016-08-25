@@ -1,8 +1,19 @@
 # qwtwplot
 
-This is another 2D plotting tool for Julia language.  It is based on (my) `qwtw` library, which is based on `qwt` library which is based on `QT` library.
+This is another 2D plotting tool for Julia language.  It is based on (my) `qwtw` `"C"` library, which is based on `qwt` library which is based on `QT` library.
 
-You can see examples and how it looks like here:
+Current version works only for `Windows7 x64`.
+In short, how to install it (for Windows7 x64):
+----------------------------
+* install `qwtw` library using an installer from
+		https://github.com/ig-or/qwtw/releases/download/v1.0/qwtwsetup.exe
+* in Julia command prompt, run 		`Pkg.clone("https://github.com/ig-or/qwtwplot")`
+* look at usage example `test/qwtwtest.jl`
+* and let the force be with you
+
+Another description
+----------------------------
+You can see how it looks like here:
 		https://github.com/ig-or/qwtw
 
 Current version works only for `Windows7 x64`, but it should not be difficult to make everything work for x32 Windows and for Linux. Actually I'm using all this both from Windows and from Fedora Linux.
