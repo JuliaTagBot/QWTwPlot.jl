@@ -8,7 +8,7 @@ qwtwStart() # start 'qwtwc' library
 # draw thin blue 'sinus':
 tMax = 10.
 t = Array(linspace(0.,tMax, 10000));
-n = length(t)
+n = length(t);
 y = sin(t);
 qfigure(1); # "1" the number of the first plot window
  # parameters: 'x' and 'y' data vectors, then 'name of this line', then 'style description', then 'line width'
@@ -35,8 +35,8 @@ qylabel("happiness") # put a label on Y axis
 =#
 
 # create another plot, with high frequency signal
-noise = rand(n)
-y = sin(t * 100.) + noise
+noise = rand(n);
+y = sin(t * 100.) + noise;
 qfigure(2)
 qplot(t, y, "sinus + noise", "-m", 2)
 qtitle("frequency test")
@@ -68,7 +68,7 @@ qplot(t1, y1, "points and line", "-tm", 2, 10)
 
 
 # create a circle on another plot window:
-x = sin(t*2.*pi/tMax); y = cos(t*2.*pi/tMax)
+x = sin(t*2.*pi/tMax); y = cos(t*2.*pi/tMax);
 qfigure(3);
 qplot2(x, y, "circle #1", "-r", 2, t)
 qtitle("circle")
@@ -80,7 +80,7 @@ qtitle("circle")
 # draw one more circle:
 t1 = Array(linspace(0.,2. * pi, 8));
 x1 = 0.5*sin(t);
-y1 = 0.5*cos(t)
+y1 = 0.5*cos(t);
 qplot2p(x1, y1, "circle #1", " ec", 20, t1)
 
 # show "main window":
@@ -88,8 +88,8 @@ qsmw()
 
 # now lets try to draw a map
 mwn = 4 # for example, we have only 4 points
-north = [55.688713, 55.698713, 55.678713, 55.60] # coords in degrees
-east = [37.901073, 37.911073, 37.905073, 37.9] # coords in degrees
+north = [55.688713, 55.698713, 55.678713, 55.60]; # coords in degrees
+east = [37.901073, 37.911073, 37.905073, 37.9]; # coords in degrees
 t4 = Array(linspace(0.,tMax, 4)); # create corresponding time info (for magic markers)
 
 qfmap(5)
@@ -97,8 +97,8 @@ qplot2p(east, north, "trajectory #1", "-rb",  20, t4);
 qtitle("top view test");
 
 #another map:
-north1 = [65.688713, 65.698713, 65.678713, 65.60] # coords in degrees
-east1 = [27.901073, 28.111073, 28.005073, 27.9] # coords in degrees
+north1 = [65.688713, 65.698713, 65.678713, 65.60]; # coords in degrees
+east1 = [27.901073, 28.111073, 28.005073, 27.9]; # coords in degrees
 qfmap(6)
 qplot2(east1, north1, "trajectory #2", "-rb",  2, t4);
 qplot2(east1, north1, "points", " er",  20, t4);

@@ -1,7 +1,12 @@
 module qwtwplot
 
-# add qwtw C library:
-ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+syst = @unix ? 1 : 2
+if syst == 1
+
+else
+	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+end
+
 
 qwtwLibHandle = 0
 qwtwFigureH = 0
@@ -19,6 +24,8 @@ qwtwMWShowH = 0
 # start qwtw "C" library and attach to it:
 function qwtwStart()
 	libName = @unix ? "libqwtwc.so" : "qwtwc"
+
+
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
 
@@ -40,10 +47,10 @@ function qwtwStart()
 	qwtwMWShowH = Libdl.dlsym(qwtwLibHandle, "qwtshowmw")
 
 
-	version = qversion()
-	println(version)
+	version = qversion();
+	println(version);
 
-	return
+	return;
 end
 
 # detach from qwtw library (very useful for debugging)
@@ -127,7 +134,7 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style:
 	ww::Int32 = lineWidth;
 	s::Int32 = symSize
 	try
-		ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{Uint8}, Ptr{Uint8}, Int32, Int32),
+		ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
 			x, y, n, name, style, ww, s);
 		sleep(0.025)
 	catch
@@ -148,7 +155,7 @@ function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{Uint8}, Ptr{Uint8}, Int32, Int32),
+	ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
 		x, y, n, name, style, 1, ww);
 	sleep(0.025)
 
@@ -161,7 +168,7 @@ function qplot2(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style::
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{Uint8}, Ptr{Uint8}, Int32, Int32, Ptr{Float64}),
+	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
 		x, y, n, name, style, ww, 1, time);
 	sleep(0.025)
 
@@ -173,34 +180,31 @@ function qplot2p(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style:
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{Uint8}, Ptr{Uint8}, Int32, Int32, Ptr{Float64}),
+	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
 		x, y, n, name, style, 1, ww, time);
 	sleep(0.025)
 
 end;
 
+# put label on horizontal axis
 function qxlabel(s::ASCIIString)
 	global qwtwXlabelH
-	ccall(qwtwXlabelH, Void, (Ptr{Uint8},), s);
+	ccall(qwtwXlabelH, Void, (Ptr{UInt8},), s);
 end;
 
+# put label on left vertical axis
 function qylabel(s::ASCIIString)
 	global qwtwYlabelH
-	ccall(qwtwYlabelH, Void, (Ptr{Uint8},), s);
+	ccall(qwtwYlabelH, Void, (Ptr{UInt8},), s);
 end;
 
-function qtitle(s::String)
+# put title on current plot
+function qtitle(s::ASCIIString)
 	global qwywTitleH
-	ccall(qwywTitleH, Void, (Ptr{Uint8},), s);
+	ccall(qwywTitleH, Void, (Ptr{UInt8},), s);
 end;
 
-#=
-function qtest(x::Array{Float64}, y::Array{Float64}, name::Ptr{Uint8}, style::Ptr{Uint8}, w)
-	ww::Int32 = w;
-	print(name)
 
-end;
-=#
 export qfigure, qfmap, qsetmode, qplot, qplot1, qplot2, qplot2p, qxlabel,  qylabel, qtitle
 export qimportant, qclear, qwtwStart, qwtwStop, qversion, qsmw
 export traceit
