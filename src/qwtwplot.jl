@@ -1,5 +1,6 @@
 module qwtwplot
 
+# add qwtw C library:
 ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 
 qwtwLibHandle = 0
@@ -15,6 +16,7 @@ qwywTitleH = 0
 qwtwVersionH = 0
 qwtwMWShowH = 0
 
+# start qwtw "C" library and attach to it:
 function qwtwStart()
 	libName = @unix ? "libqwtwc.so" : "qwtwc"
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
@@ -44,6 +46,7 @@ function qwtwStart()
 	return
 end
 
+# detach from qwtw library (very useful for debugging)
 function qwtwStop()
 	global qwtwLibHandle
 	if qwtwLibHandle != 0
@@ -76,19 +79,20 @@ function traceit( msg )
       end
 end
 
+# create a new plot window (with specific window ID)
 function qfigure(n)
 #  a::ASCIIString = libName();
 	global qwtwFigureH
 	ccall(qwtwFigureH, Void, (Int32,), n);
 end;
 
+# create a new  window to draw on a map (with specific window ID)
 function qfmap(n)
 	global qwtwTopviewH
 	ccall(qwtwTopviewH, Void, (Int32,), n);
 end;
 
 #=  set up an importance status for next lines. looks like '0' means 'not important'
-
 'not important' will not participate in 'clipping'
 =#
 function qimportant(i)
@@ -97,21 +101,21 @@ function qimportant(i)
 end
 
 #= close all the plots
-
 =#
 function qclear()
 	global qwtwCLearH
 	ccall(qwtwCLearH, Void, ());
 end
 
+# open "main control window"
 function qsmw()
 	global qwtwMWShowH
 	ccall(qwtwMWShowH, Void, ());
 end
 
 # plot normal lines
-function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString, w)
-#function qplot(x::Vector{Any}, y::Vector{Any}, name::ASCIIString, style::ASCIIString, w::Int64)
+function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString,
+		lineWidth, symSize)
 	global qwtwPlotH
 	if length(x) != length(y)
 		@printf("qplot: x[%d], y[%d]\n", length(x), length(y))
@@ -120,19 +124,25 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style:
 	assert(length(x) == length(y))
 
 	n = length(x)
-	ww::Int32 = w;
+	ww::Int32 = lineWidth;
+	s::Int32 = symSize
 	try
 		ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{Uint8}, Ptr{Uint8}, Int32, Int32),
-			x, y, n, name, style, ww, 1);
+			x, y, n, name, style, ww, s);
 		sleep(0.025)
 	catch
 		@printf("qplot: error #2\n")
 		traceit("error #2")
 	end
-
 end;
 
-# draw symbols
+# plot lines without symbols
+function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString,
+		lineWidth)
+	qplot(x, y, name, style, lineWidth, 1)
+end;
+
+# draw symbols with optional line width = 1
 function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString, w)
 	global qwtwPlotH
 	assert(length(x) == length(y))
