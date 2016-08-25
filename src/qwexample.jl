@@ -79,9 +79,9 @@ qtitle("circle")
 
 # draw one more circle:
 t1 = Array(linspace(0.,2. * pi, 8));
-x1 = 0.5*sin(t);
-y1 = 0.5*cos(t);
-qplot2p(x1, y1, "circle #1", " ec", 20, t1)
+x1 = 0.5*sin(t1);
+y1 = 0.5*cos(t1);
+qplot2p(x1, y1, "circle #2", " ec", 20, t1)
 
 # show "main window":
 qsmw()
