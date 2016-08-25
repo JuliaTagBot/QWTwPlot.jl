@@ -8,13 +8,13 @@ In short, how to install it (for Windows7 x64):
 * install `qwtw` library using an installer from
 		https://github.com/ig-or/qwtw/releases/download/v1.0/qwtwsetup.exe
 * in Julia command prompt, run 		`Pkg.clone("https://github.com/ig-or/qwtwplot")`
-* look at usage example `test/qwtwtest.jl`
+* look at usage example https://github.com/ig-or/qwtwplot/blob/master/src/qwexample.jl
 * and let the force be with you
 
 Another description
 ----------------------------
 You can see how it looks like here:
-		https://github.com/ig-or/qwtw
+		https://github.com/ig-or/qwtw - on qwtw library page. There are a number of pictures in the description.
 
 Current version works only for `Windows7 x64`, but it should not be difficult to make everything work for x32 Windows and for Linux. Actually I'm using all this both from Windows and from Fedora Linux.
 
