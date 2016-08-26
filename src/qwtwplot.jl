@@ -1,10 +1,9 @@
 module qwtwplot
 
-syst = @unix ? 1 : 2
-if syst == 1
-
-else
+@static if is_windows()
 	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+else
+
 end
 
 
@@ -88,7 +87,7 @@ end
 
 # create a new plot window (with specific window ID)
 function qfigure(n)
-#  a::ASCIIString = libName();
+#  a::String = libName();
 	global qwtwFigureH
 	ccall(qwtwFigureH, Void, (Int32,), n);
 end;
@@ -121,7 +120,7 @@ function qsmw()
 end
 
 # plot normal lines
-function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString,
+function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::String,
 		lineWidth, symSize)
 	global qwtwPlotH
 	if length(x) != length(y)
@@ -144,13 +143,13 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style:
 end;
 
 # plot lines without symbols
-function qplot(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString,
+function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::String,
 		lineWidth)
 	qplot(x, y, name, style, lineWidth, 1)
 end;
 
 # draw symbols with optional line width = 1
-function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::ASCIIString, style::ASCIIString, w)
+function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::String, style::String, w)
 	global qwtwPlotH
 	assert(length(x) == length(y))
 	n = length(x)
@@ -163,7 +162,7 @@ end;
 
 
 # plot 'top view'
-function qplot2(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style::ASCIIString, w, time::Array{Float64})
+function qplot2(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
 	global qwtwPlot2H
 	assert(length(x) == length(y))
 	n = length(x)
@@ -175,7 +174,7 @@ function qplot2(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style::
 end;
 
 # plot 'top view'
-function qplot2p(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style::ASCIIString, w, time::Array{Float64})
+function qplot2p(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
 	global qwtwPlot2H
 	assert(length(x) == length(y))
 	n = length(x)
@@ -187,19 +186,19 @@ function qplot2p(x::Array{Float64}, y::Array{Float64}, name::ASCIIString, style:
 end;
 
 # put label on horizontal axis
-function qxlabel(s::ASCIIString)
+function qxlabel(s::String)
 	global qwtwXlabelH
 	ccall(qwtwXlabelH, Void, (Ptr{UInt8},), s);
 end;
 
 # put label on left vertical axis
-function qylabel(s::ASCIIString)
+function qylabel(s::String)
 	global qwtwYlabelH
 	ccall(qwtwYlabelH, Void, (Ptr{UInt8},), s);
 end;
 
 # put title on current plot
-function qtitle(s::ASCIIString)
+function qtitle(s::String)
 	global qwywTitleH
 	ccall(qwywTitleH, Void, (Ptr{UInt8},), s);
 end;
