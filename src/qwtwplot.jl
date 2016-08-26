@@ -22,8 +22,13 @@ qwtwMWShowH = 0
 
 # start qwtw "C" library and attach to it:
 function qwtwStart()
-	libName = @unix ? "libqwtwc.so" : "qwtwc"
 
+	libName = "nolib"
+	@static if is_windows()
+		libName = "qwtwc"
+	else
+		libName = "libqwtwc.so"
+	end
 
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
@@ -61,17 +66,13 @@ function qwtwStop()
 	qwtwLibHandle = 0
 end
 
-macro qLibName()
-	libName = @unix ? "libqwtwc.so" : "qwtwc"
-	return (libName)
-end
-
 # return version info (as string)
 function qversion()
 	global qwtwVersionH
 	v =  Array(Int8, 128)
 	ccall(qwtwVersionH, Int32, (Ptr{Int8},), v);
-	return bytestring(pointer(v))
+	#return bytestring(pointer(v))
+	return unsafe_string(pointer(v))
 end;
 
 function traceit( msg )
