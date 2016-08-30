@@ -3,9 +3,9 @@ module qwtwplot
 oss = 0;
 ver = 0;
 sys_str = "is_windows()";
-if VERSION >= v"0.5"
+if VERSION > v"0.4.50"
 	ver = 5;
-	@printf("\tjulia version >= 0.5 detected\n")
+	@printf("\tjulia version > 0.4 detected\n")
 	sys_str = "(is_windows())";
 
 elseif VERSION >= v"0.4"
