@@ -12,7 +12,7 @@ elseif VERSION >= v"0.4"
 	ver = 4;
 	@printf("\tjulia version 0.4 detected\n")
 	sys_str = "(@windows? 1 : 0)"
-else 	
+else
 	@printf("\tuncnown julia version, sorry\n")
 	ver = 0;
 end
@@ -94,7 +94,13 @@ function qversion()
 	v =  Array(Int8, 128)
 	ccall(qwtwVersionH, Int32, (Ptr{Int8},), v);
 	#return bytestring(pointer(v))
-	return unsafe_string(pointer(v))
+	cmd = "unsafe_string(pointer($v))";
+	if ver < 5
+		cmd = "bytestring(pointer($v))";
+	end
+
+	#return unsafe_string(pointer(v))
+	return eval(parse(cmd))
 end;
 
 function traceit( msg )
