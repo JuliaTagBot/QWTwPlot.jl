@@ -1,9 +1,30 @@
 module qwtwplot
 
-@static if is_windows()
-	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
-else
+oss = 0;
+ver = 0;
+sys_str = "is_windows()";
+if VERSION >= v"0.5"
+	ver = 5;
+	@printf("\tjulia version >= 0.5 detected\n")
+	sys_str = "(is_windows())";
 
+elseif VERSION >= v"0.4"
+	ver = 4;
+	@printf("\tjulia version 0.4 detected\n")
+	sys_str = "(@windows? 1 : 0)"
+else 	
+	@printf("\tuncnown julia version, sorry\n")
+	ver = 0;
+end
+
+win = eval(parse(sys_str))
+if (convert(Bool, win))
+	@printf("\t windows detected\n");
+	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+	oss = 1;
+else
+	@printf("\t non-windows detected\n");
+	oss = 2;
 end
 
 
@@ -20,11 +41,12 @@ qwywTitleH = 0
 qwtwVersionH = 0
 qwtwMWShowH = 0
 
-# start qwtw "C" library and attach to it:
+# start qwtw "C" library and attach handlers to it:
 function qwtwStart()
 
 	libName = "nolib"
-	@static if is_windows()
+#	if is_windows()
+	if oss == 1
 		libName = "qwtwc"
 	else
 		libName = "libqwtwc.so"
