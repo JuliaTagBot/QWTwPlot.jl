@@ -13,17 +13,17 @@ elseif VERSION >= v"0.4"
 	@printf("\tjulia version 0.4 detected\n")
 	sys_str = "(@windows? 1 : 0)"
 else
-	@printf("\tuncnown julia version, sorry\n")
+	@printf("\tunknown julia version, sorry\n")
 	ver = 0;
 end
 
 win = eval(parse(sys_str))
 if (convert(Bool, win))
-	@printf("\t windows detected\n");
+	@printf("\t Windows detected\n");
 	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 	oss = 1;
 else
-	@printf("\t non-windows detected\n");
+	@printf("\t non-Windows detected\n");
 	oss = 2;
 end
 
