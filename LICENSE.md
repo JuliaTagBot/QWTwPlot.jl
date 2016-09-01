@@ -1,4 +1,4 @@
-The qwtwplot.jl package is licensed under the Simplified "2-clause" BSD License:
+The QWTwPlot.jl package is licensed under the Simplified "2-clause" BSD License:
 
 > Copyright (c) 2016: IGOR SANDLER.
 >
