@@ -1,18 +1,20 @@
-# qwtwplot
+# QWTwPlot
 
-This is another 2D plotting tool for Julia language.  It is based on (my) `qwtw` `"C"` library, which is based on `qwt` library which is based on `QT` library.
+This is another 2D plotting tool for Julia language.  It is based on (my) `qwtw` `"C"` library, which is based on `QWT` library which is based on `QT` library.
 
 Current version should work for `Windows` and for `Linux`.
+I'm using this for mostly for data analysis (dynamic systems with big state vector, sometimes its difficult to say how one variable influence other variable). Some useful features are explained on following page: https://github.com/ig-or/QWTwPlot.jl/wiki/qwtw-library-features
+
 
 how to install it
 ----------------------------
 * install `qwtw` library using instructions from here
 		https://github.com/ig-or/qwtw
-* in Julia command prompt, run 	`Pkg.clone("https://github.com/ig-or/qwtwplot.jl")`
-* look at usage example https://github.com/ig-or/qwtwplot.jl/blob/master/src/qwexample.jl
+* in Julia command prompt, run 	`Pkg.clone("https://github.com/ig-or/QWTwPlot.jl.git")`
+* look at usage example https://github.com/ig-or/QWTwPlot.jl/blob/master/src/qwexample.jl
 * and let the force be with you
 
-A hope to add some additional info and usage examples on project WIKI page here  https://github.com/ig-or/qwtwplot.jl/wiki
+There is some additional info and usage examples on project WIKI page here  https://github.com/ig-or/QWTwPlot.jl/wiki
 
 
 Another description

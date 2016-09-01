@@ -1,4 +1,4 @@
-module qwtwplot
+module QWTwPlot
 
 oss = 0;
 ver = 0;

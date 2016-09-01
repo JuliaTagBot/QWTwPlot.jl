@@ -2,7 +2,7 @@
 #
 #
 
-using qwtwplot
+using QWTwPlot
 qwtwStart() # start 'qwtwc' library
 
 # draw thin blue 'sinus':
