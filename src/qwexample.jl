@@ -1,5 +1,7 @@
 #   simple qwtwplot package example
-#
+#   look at wiki page for more info
+#   wiki lives here: https://github.com/ig-or/QWTwPlot.jl/wiki
+#   also, useful page located here: https://github.com/ig-or/QWTwPlot.jl/wiki/qwtw-library-features
 #
 
 using QWTwPlot
@@ -30,28 +32,32 @@ qylabel("happiness") # put a label on Y axis
 
 	Button with a "hand" - it's a "pan mode".  It will shift all the picture,
 	but it will not change scale.
+
 	"disk" button - allow you to save image to a (png) file
+
 	"[]" buttom means "make square axis" i.e. make equal scale for X and Y axis.
 	this `[]` button is useful when you draw something like a `top view plot`
 
 	Real magic is in left and right buttons; see below about it.
+    and also look at https://github.com/ig-or/QWTwPlot.jl/wiki/qwtw-library-features
 
 =#
 
 # create another plot, with high frequency signal and noise
 noise = rand(n);
 y = sin(t * 100.) + noise;
-qfigure(2)
+qfigure(2)   # make a plot with another plot ID
 qplot(t, y, "sinus + noise", "-m", 2)
 qtitle("frequency test")
 
 #= what is the frequency of our signal from last window?
  pless "f" button, another small window will appear;
- then on new small window select "sinus + noise",
- select "4" from combo box and close this small window (with Alt-F4 for example)
+ then - on new small window - select "sinus + noise",
+ select "4" from combo box and close this small window (with Alt-F4 (for example))
 
  after this, "frequency" plot will be created,
  actually, it is called "Power Spectral Dencity plot"
+ PSD creation code was implemented by Anton Klimenkov
 =#
 
 # add another line to the first plot:
@@ -60,7 +66,7 @@ y1 = cos(t1 * 0.5)
 qfigure(1); # switch back to the first plot
 
 # if we do not need the lines, only symbols:
-qplot1(t1, y1, "points and line", " eb",  30)
+qplot1(t1, y1, "points and line #1", " eb",  30)
 
 #= the parameter #4 in qplot or qplot1 functions is a "line style"
 	it is a string consisting from 1 or 2 or 3 characters
@@ -75,12 +81,13 @@ qplot1(t1, y1, "points and line", " eb",  30)
 
  # parameters: 'x' and 'y' data vectors, then 'name of this line',
  # then 'style description', then 'line width', and "symbol size"
-qplot(t1, y1, "points and line", "-tm", 2, 10)
+qplot(t1, y1, "points and line #2", "-tm", 2, 10)
 
 #= now, try to use an arrow burtton: it will draw a marker on all the plots.
 	Press "Arrow" button, then left mouse button somewhere inside the plot.
+	Notice that markers will appear on all the plots, and all the lines.
 
-	Next, select some region on one of the plot with ZOOM tool;  and press right "clip" button.
+	Next, select some region on one of the plots using ZOOM tool;  and press right "clip" button.
 	All the plots will (try to) zoom to the same region.
 =#
 
@@ -102,6 +109,9 @@ qplot2p(x1, y1, "circle #2", " ec", 20, t1)
 
 #= show "main window" in order to control all other windows:
 it will allow you to switch between all other plot windows
+
+When you have more than 15 plots, it's very convinient to switch
+between plots using this helpful window
 =#
 qsmw()
 
@@ -123,5 +133,13 @@ qplot2(east1, north1, "trajectory #2", "-rb",  2, t4);
 qplot2(east1, north1, "points", " er",  20, t4);
 qtitle("top view test #2");
 
-# close all the windows
+# if everything is working as you need, you can
+# close all the plots with following command:
 qclear()
+
+# if you need bugs to be fixed, do not hesitate to fix them %)
+# and create a pull request
+# and/or write me on igor271828@gmail.com - maybe it'll be
+# much faster for me to fix everything or make some  changes or add functionality
+#
+# Best regards Igor

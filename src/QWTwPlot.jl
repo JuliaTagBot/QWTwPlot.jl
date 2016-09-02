@@ -1,5 +1,9 @@
 module QWTwPlot
 
+#=  this code below should
+	handle OS and Julia language version differences
+=#
+
 oss = 0;
 ver = 0;
 sys_str = "is_windows()";
@@ -27,7 +31,7 @@ else
 	oss = 2;
 end
 
-
+# DLLs and function handles below:
 qwtwLibHandle = 0
 qwtwFigureH = 0
 qwtwTopviewH = 0
@@ -80,6 +84,8 @@ function qwtwStart()
 end
 
 # detach from qwtw library (very useful for debugging)
+# but PLEASE do not call it. This is for
+# debugging (underlying qwtw "C" library) only.
 function qwtwStop()
 	global qwtwLibHandle
 	if qwtwLibHandle != 0
@@ -149,6 +155,9 @@ function qsmw()
 end
 
 # plot normal lines
+# what does 'style' parameter means? look on
+# example code
+# for info about it (  https://github.com/ig-or/QWTwPlot.jl/blob/master/src/qwexample.jl  )
 function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::String,
 		lineWidth, symSize)
 	global qwtwPlotH
