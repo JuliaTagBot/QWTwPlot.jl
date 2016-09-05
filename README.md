@@ -10,7 +10,9 @@ how to install it
 ----------------------------
 * install `qwtw` library using instructions from here
 		https://github.com/ig-or/qwtw
-* in Julia command prompt, run 	`Pkg.clone("https://github.com/ig-or/QWTwPlot.jl.git")`
+* in Julia command prompt, run 	
+		Pkg.add("QWTwPlot")
+ * run `Pkg.checkout("QWTwPlot")` if you'd like to use latest bug fixes and new features
 * look at usage example https://github.com/ig-or/QWTwPlot.jl/blob/master/src/qwexample.jl
 * and let the force be with you
 
