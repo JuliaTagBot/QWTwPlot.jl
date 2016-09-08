@@ -9,12 +9,12 @@ branches:
   only:
     - master
     - /release-.*/
-
+    - testtest
 notifications:
   - provider: Email
     on_build_success: false
     on_build_failure: false
-    on_build_status_changed: false
+    on_build_status_changed: true
 
 install:
 # Download most recent Julia Windows binary
