@@ -34,11 +34,13 @@ end
 # DLLs and function handles below:
 qwtwLibHandle = 0
 qwtwFigureH = 0
+qwtwFigure3DH = 0
 qwtwTopviewH = 0
 qwtwsetimpstatusH = 0
 qwtwCLearH = 0
 qwtwPlotH = 0
 qwtwPlot2H = 0
+qwtwPlot3DH = 0
 qwtwXlabelH = 0
 qwtwYlabelH = 0
 qwywTitleH = 0
@@ -46,7 +48,7 @@ qwtwVersionH = 0
 qwtwMWShowH = 0
 
 # start qwtw "C" library and attach handlers to it:
-function qwtwStart()
+function qwtwStart(debugMode::Int64 = 0)
 
 	libName = "nolib"
 #	if is_windows()
@@ -55,9 +57,11 @@ function qwtwStart()
 	else
 		libName = "libqwtwc.so"
 	end
+	if debugMode != 0 libName = string(libName, "d"); end
 
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
+	global qwtwPlot3DH, qwtwFigure3DH
 
 	if qwtwLibHandle != 0 # looks like we already started
 		return
@@ -65,10 +69,12 @@ function qwtwStart()
 	qwtwStop()
 	qwtwLibHandle = Libdl.dlopen(libName)
 	qwtwFigureH = Libdl.dlsym(qwtwLibHandle, "qwtfigure")
+	qwtwFigure3DH = Libdl.dlsym(qwtwLibHandle, "qwtfigure3d")
 	qwtwTopviewH = Libdl.dlsym(qwtwLibHandle, "topview")
 	qwtwsetimpstatusH = Libdl.dlsym(qwtwLibHandle, "qwtsetimpstatus")
 	qwtwCLearH = Libdl.dlsym(qwtwLibHandle, "qwtclear")
 	qwtwPlotH = Libdl.dlsym(qwtwLibHandle, "qwtplot")
+	qwtwPlot3DH = Libdl.dlsym(qwtwLibHandle, "qwtplot3d")
 	qwtwPlot2H = Libdl.dlsym(qwtwLibHandle, "qwtplot2")
 	qwtwXlabelH = Libdl.dlsym(qwtwLibHandle, "qwtxlabel")
 	qwtwYlabelH = Libdl.dlsym(qwtwLibHandle, "qwtylabel")
@@ -131,6 +137,12 @@ end;
 function qfmap(n)
 	global qwtwTopviewH
 	ccall(qwtwTopviewH, Void, (Int32,), n);
+end;
+
+# create a new  window to draw a 3D points (QT engine)
+function qf3d(n)
+	global qwtwFigure3DH
+	ccall(qwtwFigure3DH, Void, (Int32,), n);
 end;
 
 #=  set up an importance status for next lines. looks like '0' means 'not important'
@@ -198,6 +210,20 @@ function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Str
 
 end;
 
+# draw symbols in 3D space
+# currently style and 'w' are not used
+function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
+	 		name::String, style::String, w)
+	global qwtwPlotH
+	assert(length(x) == length(y))
+	n = length(x)
+	ww::Int32 = w;
+	ccall(qwtwPlot3DH, Void, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
+		x, y, z, n, name, style, 1, ww);
+	sleep(0.025)
+
+end;
 
 # plot 'top view'
 function qplot2(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
@@ -245,6 +271,7 @@ end;
 export qfigure, qfmap, qsetmode, qplot, qplot1, qplot2, qplot2p, qxlabel,  qylabel, qtitle
 export qimportant, qclear, qwtwStart, qwtwStop, qversion, qsmw
 export traceit
+export qplot3d, qf3d
 
 
 end # module
