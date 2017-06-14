@@ -213,14 +213,14 @@ end;
 # draw symbols in 3D space
 # currently style and 'w' are not used
 function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
-	 		name::String, style::String, w)
+	 		name::String, style::String, w, time::Vector{Float64})
 	global qwtwPlotH
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
 	ccall(qwtwPlot3DH, Void, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
-			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
-		x, y, z, n, name, style, 1, ww);
+			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32,  Ptr{Float64}),
+		x, y, z, n, name, style, 1, ww, time);
 	sleep(0.025)
 
 end;
