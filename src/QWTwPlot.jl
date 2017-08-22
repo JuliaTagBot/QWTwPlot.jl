@@ -103,7 +103,7 @@ end
 # return version info (as string)
 function qversion()
 	global qwtwVersionH
-	v =  Array(Int8, 128)
+	v =  Array{Int8}(128)
 	ccall(qwtwVersionH, Int32, (Ptr{Int8},), v);
 	#return bytestring(pointer(v))
 	cmd = "unsafe_string(pointer($v))";
