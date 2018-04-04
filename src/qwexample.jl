@@ -107,6 +107,11 @@ x1 = 0.5*sin.(t1);
 y1 = 0.5*cos.(t1);
 qplot2p(x1, y1, "circle #2", " ec", 20, t1)
 
+# small 3D xample:
+qf3d(124)
+qplot3d(x, y, x .* y, "3D", "-g", 2, t)
+qplot3d(x1, y1, x1 .* y1, "3D", "-r", 5, t1)
+
 #= show "main window" in order to control all other windows:
 it will allow you to switch between all other plot windows
 
