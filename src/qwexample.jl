@@ -11,13 +11,13 @@ qwtwStart() # start 'qwtwc' library
 tMax = 10. # let it be `maximum time`
 t = Array(linspace(0.,tMax, 10000)); # our `time info`
 n = length(t);
-y = sin(t);     # we will draw this signal
+y = sin.(t);     # we will draw this signal
 qfigure(1); # "1" the number of the first plot window
  # parameters: 'x' and 'y' data vectors, then 'name of this line', then 'style description', then 'line width'
 qplot(t, y, "blue line", "-b", 1)
 
 # add green thick another sinus on the same plot:
-y = sin(t .* 4.) + cos(t * 0.8);
+y = sin.(t .* 4.) + cos.(t * 0.8);
 qplot(t, y, "thick green line", "-g", 4) #'x' and 'y' data vectors, then 'name of this line', then 'style description', then 'line width'
 qtitle("first plot window") # add a title for the first plot
 qxlabel("time (in seconds)") # put a label on X axis
@@ -45,7 +45,7 @@ qylabel("happiness") # put a label on Y axis
 
 # create another plot, with high frequency signal and noise
 noise = rand(n);
-y = sin(t * 100.) + noise;
+y = sin.(t * 100.) + noise;
 qfigure(2)   # make a plot with another plot ID
 qplot(t, y, "sinus + noise", "-m", 2)
 qtitle("frequency test")
@@ -62,7 +62,7 @@ qtitle("frequency test")
 
 # add another line to the first plot:
 t1 = Array(linspace(0.,10., 5))
-y1 = cos(t1 * 0.5)
+y1 = cos.(t1 * 0.5)
 qfigure(1); # switch back to the first plot
 
 # if we do not need the lines, only symbols:
@@ -92,7 +92,7 @@ qplot(t1, y1, "points and line #2", "-tm", 2, 10)
 =#
 
 # create a circle on another plot window:
-x = sin(t*2.*pi/tMax); y = cos(t*2.*pi/tMax);
+x = sin.(t*2.*pi/tMax); y = cos.(t*2.*pi/tMax);
 qfigure(3);
 qplot2(x, y, "circle #1", "-r", 2, t)
 qtitle("circle")
@@ -103,8 +103,8 @@ qtitle("circle")
 
 # draw one more circle on the same plot:
 t1 = Array(linspace(0.,2. * pi, 8));
-x1 = 0.5*sin(t1);
-y1 = 0.5*cos(t1);
+x1 = 0.5*sin.(t1);
+y1 = 0.5*cos.(t1);
 qplot2p(x1, y1, "circle #2", " ec", 20, t1)
 
 #= show "main window" in order to control all other windows:
@@ -142,4 +142,4 @@ qclear()
 # and/or write me on igor271828@gmail.com - maybe it'll be
 # much faster for me to fix everything or make some  changes or add functionality
 #
-# Best regards Igor
+# Best regards, Igor
