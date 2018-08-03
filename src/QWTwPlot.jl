@@ -46,6 +46,7 @@ qwtwYlabelH = 0
 qwywTitleH = 0
 qwtwVersionH = 0
 qwtwMWShowH = 0
+qwtEnableBroadcastH = 0
 
 # start qwtw "C" library and attach handlers to it:
 function qwtwStart(debugMode::Int64 = 0)
@@ -61,7 +62,7 @@ function qwtwStart(debugMode::Int64 = 0)
 
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
-	global qwtwPlot3DH, qwtwFigure3DH
+	global qwtwPlot3DH, qwtwFigure3DH, qwtEnableBroadcastH
 
 	if qwtwLibHandle != 0 # looks like we already started
 		return
@@ -81,6 +82,7 @@ function qwtwStart(debugMode::Int64 = 0)
 	qwywTitleH = Libdl.dlsym(qwtwLibHandle, "qwttitle")
 	qwtwVersionH = Libdl.dlsym(qwtwLibHandle, "qwtversion")
 	qwtwMWShowH = Libdl.dlsym(qwtwLibHandle, "qwtshowmw")
+	qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
 
 
 	version = qversion();
@@ -225,6 +227,30 @@ function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
 
 end;
 
+
+
+function qEnableCoordBroadcast(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
+	 		time::Vector{Float64})
+	global qwtEnableBroadcastH
+	assert(length(x) == length(y))
+	assert(length(x) == length(z))
+	assert(length(x) == length(time))
+	
+	n = length(time)
+
+	ccall(qwtEnableBroadcastH, Void, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+			 Ptr{Float64}, Int32),
+		x, y, z , time, n);
+	sleep(0.025)
+
+end;
+
+
+
+
+
+
+
 # plot 'top view'
 function qplot2(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
 	global qwtwPlot2H
@@ -271,7 +297,7 @@ end;
 export qfigure, qfmap, qsetmode, qplot, qplot1, qplot2, qplot2p, qxlabel,  qylabel, qtitle
 export qimportant, qclear, qwtwStart, qwtwStop, qversion, qsmw
 export traceit
-export qplot3d, qf3d
+export qplot3d, qf3d, qEnableCoordBroadcast
 
 
 end # module
