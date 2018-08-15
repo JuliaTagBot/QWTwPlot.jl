@@ -62,7 +62,7 @@ function qwtwStart(debugMode::Int64 = 0)
 
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
-	global qwtwPlot3DH, qwtwFigure3DH, qwtEnableBroadcastH
+	global qwtwPlot3DH, qwtwFigure3DH, qwtEnableBroadcastH, qwtDisableBroadcastH
 
 	if qwtwLibHandle != 0 # looks like we already started
 		return
@@ -82,7 +82,9 @@ function qwtwStart(debugMode::Int64 = 0)
 	qwywTitleH = Libdl.dlsym(qwtwLibHandle, "qwttitle")
 	qwtwVersionH = Libdl.dlsym(qwtwLibHandle, "qwtversion")
 	qwtwMWShowH = Libdl.dlsym(qwtwLibHandle, "qwtshowmw")
+	
 	qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
+	qwtDisableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtDisableCoordBroadcast")
 
 
 	version = qversion();
@@ -245,6 +247,14 @@ function qEnableCoordBroadcast(x::Vector{Float64}, y::Vector{Float64}, z::Vector
 
 end;
 
+function qDisableCoordBroadcast()
+	global qwtDisableBroadcastH
+	
+	ccall(qwtDisableBroadcastH, Void, ());
+	sleep(0.025);
+	
+end;
+
 
 
 
@@ -297,7 +307,7 @@ end;
 export qfigure, qfmap, qsetmode, qplot, qplot1, qplot2, qplot2p, qxlabel,  qylabel, qtitle
 export qimportant, qclear, qwtwStart, qwtwStop, qversion, qsmw
 export traceit
-export qplot3d, qf3d, qEnableCoordBroadcast
+export qplot3d, qf3d, qEnableCoordBroadcast, qDisableCoordBroadcast
 
 
 end # module
