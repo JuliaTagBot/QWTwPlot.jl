@@ -6,23 +6,8 @@ using Printf
 
 oss = 0;
 ver = 0;
-sys_str = "is_windows()";
-if VERSION > v"0.4.50"
-	ver = 5;
-	@printf("\tjulia version > 0.4 detected\n")
-	sys_str = "(is_windows())";
 
-elseif VERSION >= v"0.4"
-	ver = 4;
-	@printf("\tjulia version 0.4 detected\n")
-	sys_str = "(@windows? 1 : 0)"
-else
-	@printf("\tunknown julia version, sorry\n")
-	ver = 0;
-end
-
-win = eval(parse(sys_str))
-if (convert(Bool, win))
+@static if Sys.iswindows()
 	@printf("\t Windows detected\n");
 	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 	oss = 1;
