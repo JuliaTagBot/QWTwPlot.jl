@@ -1,2 +1,7 @@
+authors = ["ig-or<igor271828@gmail.com>"]
+name = "QWTwPlot"
+uuid = "487e05b0-aaf8-11e8-397d-63af7fce0aac"
+version = "1.0.0"
+
 [deps]
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
