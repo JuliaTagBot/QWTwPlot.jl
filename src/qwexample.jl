@@ -93,7 +93,7 @@ qplot(t1, y1, "points and line #2", "-tm", 2, 10)
 =#
 
 # create a circle on another plot window:
-x = sin.(t*2.*pi/tMax); y = cos.(t*2.*pi/tMax);
+x = sin.(t .* (2.0*pi/tMax)); y = cos.(t .* (2.0*pi/tMax));
 qfigure(3);
 qplot2(x, y, "circle #1", "-r", 2, t)
 qtitle("circle")
@@ -125,7 +125,7 @@ qsmw()
 mwn = 4 # for this small example, we have only 4 points
 north = [55.688713, 55.698713, 55.678713, 55.60]; # coords in degrees
 east = [37.901073, 37.911073, 37.905073, 37.9]; # coords in degrees
-t4 = Array(range(0.,stop=tMax, range=4)); # create corresponding time info (for our cool magic markers)
+t4 = Array(range(0.,stop=tMax, length=4)); # create corresponding time info (for our cool magic markers)
 
 qfmap(5)
 qplot2p(east, north, "trajectory #1", "-rb",  20, t4);
@@ -141,7 +141,7 @@ qtitle("top view test #2");
 
 # if everything is working as you need, you can
 # close all the plots with following command:
-qclear()
+#qclear()
 
 # if you need bugs to be fixed, do not hesitate to fix them %)
 # and create a pull request
