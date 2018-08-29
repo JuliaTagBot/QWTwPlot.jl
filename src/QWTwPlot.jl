@@ -38,6 +38,7 @@ qwtEnableBroadcastH = 0
 function qwtwStart(debugMode::Int64 = 0)
 
 	libName = "nolib"
+	@printf "startint qwtw; current path: %s\n\n" ENV["PATH"]
 #	if is_windows()
 	if oss == 1
 		libName = "qwtwc"
