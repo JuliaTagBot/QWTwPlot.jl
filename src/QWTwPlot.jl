@@ -169,7 +169,7 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Stri
 		@printf("qplot: x[%d], y[%d]\n", length(x), length(y))
 		traceit("error")
 	end
-	assert(length(x) == length(y))
+	@assert (length(x) == length(y))
 
 	n = length(x)
 	ww::Int32 = lineWidth;
@@ -193,7 +193,7 @@ end;
 # draw symbols with optional line width = 1
 function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::String, style::String, w)
 	global qwtwPlotH
-	assert(length(x) == length(y))
+	@assert (length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
 	ccall(qwtwPlotH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
@@ -207,7 +207,7 @@ end;
 function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
 	 		name::String, style::String, w, time::Vector{Float64})
 	global qwtwPlotH
-	assert(length(x) == length(y))
+	@assert (length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
 	ccall(qwtwPlot3DH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
@@ -222,9 +222,9 @@ end;
 function qEnableCoordBroadcast(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
 	 		time::Vector{Float64})
 	global qwtEnableBroadcastH
-	assert(length(x) == length(y))
-	assert(length(x) == length(z))
-	assert(length(x) == length(time))
+	@assert (length(x) == length(y))
+	@assert (length(x) == length(z))
+	@assert (length(x) == length(time))
 	
 	n = length(time)
 
@@ -252,7 +252,7 @@ end;
 # plot 'top view'
 function qplot2(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
 	global qwtwPlot2H
-	assert(length(x) == length(y))
+	@assert (length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
 	ccall(qwtwPlot2H, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
@@ -264,7 +264,7 @@ end;
 # plot 'top view'
 function qplot2p(x::Array{Float64}, y::Array{Float64}, name::String, style::String, w, time::Array{Float64})
 	global qwtwPlot2H
-	assert(length(x) == length(y))
+	@assert (length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
 	ccall(qwtwPlot2H, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),

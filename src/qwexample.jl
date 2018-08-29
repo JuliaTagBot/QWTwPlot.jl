@@ -9,7 +9,8 @@ qwtwStart() # start 'qwtwc' library
 
 # draw thin blue 'sinus':
 tMax = 10. # let it be `maximum time`
-t = Array(linspace(0.,tMax, 10000)); # our `time info`
+#t = Array(linspace(0.,tMax, 10000)); # our `time info`
+t = Array(range(0.,stop=tMax, length=10000)); # our `time info`
 n = length(t);
 y = sin.(t);     # we will draw this signal
 qfigure(1); # "1" the number of the first plot window
@@ -61,7 +62,7 @@ qtitle("frequency test")
 =#
 
 # add another line to the first plot:
-t1 = Array(linspace(0.,10., 5))
+t1 = Array(range(0.,stop = 10., length=5))
 y1 = cos.(t1 * 0.5)
 qfigure(1); # switch back to the first plot
 
@@ -102,7 +103,7 @@ qtitle("circle")
 # try to use left button ("ARROW") on a circle plot - it also works
 
 # draw one more circle on the same plot:
-t1 = Array(linspace(0.,2. * pi, 8));
+t1 = Array(range(0.,  stop=2. * pi, length=8));
 x1 = 0.5*sin.(t1);
 y1 = 0.5*cos.(t1);
 qplot2p(x1, y1, "circle #2", " ec", 20, t1)
@@ -124,7 +125,7 @@ qsmw()
 mwn = 4 # for this small example, we have only 4 points
 north = [55.688713, 55.698713, 55.678713, 55.60]; # coords in degrees
 east = [37.901073, 37.911073, 37.905073, 37.9]; # coords in degrees
-t4 = Array(linspace(0.,tMax, 4)); # create corresponding time info (for our cool magic markers)
+t4 = Array(range(0.,stop=tMax, range=4)); # create corresponding time info (for our cool magic markers)
 
 qfmap(5)
 qplot2p(east, north, "trajectory #1", "-rb",  20, t4);
