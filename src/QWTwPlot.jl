@@ -2,15 +2,14 @@ module QWTwPlot
 using Printf
 using Libdl
 #=  this code below should
-	handle OS and Julia language version differences
+	handle OS differences
 =#
 
 oss = 0;
-ver = 0;
 
 @static if Sys.iswindows()
 	@printf("\t Windows detected\n");
-	ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+	#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 	oss = 1;
 else
 	@printf("\t non-Windows detected\n");
@@ -38,6 +37,10 @@ qwtEnableBroadcastH = 0
 function qwtwStart(debugMode::Int64 = 0)
 
 	libName = "nolib"
+	if oss == 1
+		ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+		@printf "qwtw added to the path \n"
+	end
 	@printf "startint qwtw; current path: %s\n\n" ENV["PATH"]
 #	if is_windows()
 	if oss == 1
