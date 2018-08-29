@@ -8,11 +8,11 @@ using Libdl
 oss = 0;
 
 @static if Sys.iswindows()
-	@printf("\t Windows detected\n");
+	@printf "\t Windows detected\n"
 	#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 	oss = 1;
 else
-	@printf("\t non-Windows detected\n");
+	@printf "\t non-Windows detected\n"
 	oss = 2;
 end
 
@@ -166,7 +166,7 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Stri
 		lineWidth, symSize)
 	global qwtwPlotH
 	if length(x) != length(y)
-		@printf("qplot: x[%d], y[%d]\n", length(x), length(y))
+		@printf "qplot: x[%d], y[%d]\n" length(x) length(y)
 		traceit("error")
 	end
 	@assert (length(x) == length(y))
@@ -179,7 +179,7 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Stri
 			x, y, n, name, style, ww, s);
 		sleep(0.025)
 	catch
-		@printf("qplot: error #2\n")
+		@printf "qplot: error #2\n"
 		traceit("error #2")
 	end
 end;
