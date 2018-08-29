@@ -1,5 +1,6 @@
 module QWTwPlot
 using Printf
+using Libdl
 #=  this code below should
 	handle OS and Julia language version differences
 =#
@@ -92,16 +93,14 @@ end
 # return version info (as string)
 function qversion()
 	global qwtwVersionH
-	v =  Array{Int8}(128)
+	#v =  Array{Int8}(128)
+	v = zeros(Int8, 128)
 	ccall(qwtwVersionH, Int32, (Ptr{Int8},), v);
 	#return bytestring(pointer(v))
-	cmd = "unsafe_string(pointer($v))";
-	if ver < 5
-		cmd = "bytestring(pointer($v))";
-	end
+	cmd = unsafe_string(pointer(v));
 
-	#return unsafe_string(pointer(v))
-	return eval(parse(cmd))
+
+	return cmd
 end;
 
 function traceit( msg )
@@ -119,19 +118,19 @@ end
 function qfigure(n)
 #  a::String = libName();
 	global qwtwFigureH
-	ccall(qwtwFigureH, Void, (Int32,), n);
+	ccall(qwtwFigureH, Cvoid, (Int32,), n);
 end;
 
 # create a new  window to draw on a map (with specific window ID)
 function qfmap(n)
 	global qwtwTopviewH
-	ccall(qwtwTopviewH, Void, (Int32,), n);
+	ccall(qwtwTopviewH, Cvoid, (Int32,), n);
 end;
 
 # create a new  window to draw a 3D points (QT engine)
 function qf3d(n)
 	global qwtwFigure3DH
-	ccall(qwtwFigure3DH, Void, (Int32,), n);
+	ccall(qwtwFigure3DH, Cvoid, (Int32,), n);
 end;
 
 #=  set up an importance status for next lines. looks like '0' means 'not important'
@@ -139,20 +138,20 @@ end;
 =#
 function qimportant(i)
 	global qwtwsetimpstatusH
-	ccall(qwtwsetimpstatusH, Void, (Int32,), i);
+	ccall(qwtwsetimpstatusH, Cvoid, (Int32,), i);
 end
 
 #= close all the plots
 =#
 function qclear()
 	global qwtwCLearH
-	ccall(qwtwCLearH, Void, ());
+	ccall(qwtwCLearH, Cvoid, ());
 end
 
 # open "main control window"
 function qsmw()
 	global qwtwMWShowH
-	ccall(qwtwMWShowH, Void, ());
+	ccall(qwtwMWShowH, Cvoid, ());
 end
 
 # plot normal lines
@@ -172,7 +171,7 @@ function qplot(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Stri
 	ww::Int32 = lineWidth;
 	s::Int32 = symSize
 	try
-		ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
+		ccall(qwtwPlotH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
 			x, y, n, name, style, ww, s);
 		sleep(0.025)
 	catch
@@ -193,7 +192,7 @@ function qplot1(x::Vector{Float64}, y::Vector{Float64}, name::String, style::Str
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlotH, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
+	ccall(qwtwPlotH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32),
 		x, y, n, name, style, 1, ww);
 	sleep(0.025)
 
@@ -207,7 +206,7 @@ function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlot3DH, Void, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+	ccall(qwtwPlot3DH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
 			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32,  Ptr{Float64}),
 		x, y, z, n, name, style, 1, ww, time);
 	sleep(0.025)
@@ -225,7 +224,7 @@ function qEnableCoordBroadcast(x::Vector{Float64}, y::Vector{Float64}, z::Vector
 	
 	n = length(time)
 
-	ccall(qwtEnableBroadcastH, Void, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+	ccall(qwtEnableBroadcastH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
 			 Ptr{Float64}, Int32),
 		x, y, z , time, n);
 	sleep(0.025)
@@ -235,7 +234,7 @@ end;
 function qDisableCoordBroadcast()
 	global qwtDisableBroadcastH
 	
-	ccall(qwtDisableBroadcastH, Void, ());
+	ccall(qwtDisableBroadcastH, Cvoid, ());
 	sleep(0.025);
 	
 end;
@@ -252,7 +251,7 @@ function qplot2(x::Array{Float64}, y::Array{Float64}, name::String, style::Strin
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
+	ccall(qwtwPlot2H, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
 		x, y, n, name, style, ww, 1, time);
 	sleep(0.025)
 
@@ -264,7 +263,7 @@ function qplot2p(x::Array{Float64}, y::Array{Float64}, name::String, style::Stri
 	assert(length(x) == length(y))
 	n = length(x)
 	ww::Int32 = w;
-	ccall(qwtwPlot2H, Void, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
+	ccall(qwtwPlot2H, Cvoid, (Ptr{Float64}, Ptr{Float64}, Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32, Ptr{Float64}),
 		x, y, n, name, style, 1, ww, time);
 	sleep(0.025)
 
@@ -273,19 +272,19 @@ end;
 # put label on horizontal axis
 function qxlabel(s::String)
 	global qwtwXlabelH
-	ccall(qwtwXlabelH, Void, (Ptr{UInt8},), s);
+	ccall(qwtwXlabelH, Cvoid, (Ptr{UInt8},), s);
 end;
 
 # put label on left vertical axis
 function qylabel(s::String)
 	global qwtwYlabelH
-	ccall(qwtwYlabelH, Void, (Ptr{UInt8},), s);
+	ccall(qwtwYlabelH, Cvoid, (Ptr{UInt8},), s);
 end;
 
 # put title on current plot
 function qtitle(s::String)
 	global qwywTitleH
-	ccall(qwywTitleH, Void, (Ptr{UInt8},), s);
+	ccall(qwywTitleH, Cvoid, (Ptr{UInt8},), s);
 end;
 
 
