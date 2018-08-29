@@ -3,10 +3,7 @@ language: julia
 os:
   - linux
 julia:
-  - 0.6
-  - nightly
-git:
-  depth: 10
+  - 1.0
 notifications:
   email: true
 # uncomment the following lines to override the default test script
