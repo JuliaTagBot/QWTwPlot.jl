@@ -36,7 +36,7 @@ qwtwMWShowH = 0
 qwtEnableBroadcastH = 0
 
 # start qwtw "C" library and attach handlers to it:
-function qwtwStart(debugMode::Int64 = 0)
+function qwtwStart(debugMode = 0)
 
 	libName = "nolib"
 	if oss == 1
@@ -63,7 +63,13 @@ function qwtwStart(debugMode::Int64 = 0)
 	qwtwLibHandle = Libdl.dlopen(libName)
 	qwtwFigureH = Libdl.dlsym(qwtwLibHandle, "qwtfigure")
 	qwtwFigure3DH = Libdl.dlsym(qwtwLibHandle, "qwtfigure3d")
-	qwtwTopviewH = Libdl.dlsym(qwtwLibHandle, "topview")
+	
+	try
+		qwtwTopviewH = Libdl.dlsym(qwtwLibHandle, "topview")
+	catch
+		@printf "WARNING: topview disabled\n"
+	end
+	
 	qwtwsetimpstatusH = Libdl.dlsym(qwtwLibHandle, "qwtsetimpstatus")
 	qwtwCLearH = Libdl.dlsym(qwtwLibHandle, "qwtclear")
 	qwtwPlotH = Libdl.dlsym(qwtwLibHandle, "qwtplot")
@@ -75,8 +81,12 @@ function qwtwStart(debugMode::Int64 = 0)
 	qwtwVersionH = Libdl.dlsym(qwtwLibHandle, "qwtversion")
 	qwtwMWShowH = Libdl.dlsym(qwtwLibHandle, "qwtshowmw")
 	
-	qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
-	qwtDisableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtDisableCoordBroadcast")
+	try
+		qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
+		qwtDisableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtDisableCoordBroadcast")
+	catch
+		@printf "WARNING: UDP broacast disabled\n"
+	end
 
 
 	version = qversion();
