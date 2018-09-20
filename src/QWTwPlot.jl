@@ -43,7 +43,7 @@ function qwtwStart(debugMode = 0)
 		ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 		@printf "qwtw added to the path \n"
 	end
-	@printf "startint qwtw; current path: %s\n\n" ENV["PATH"]
+	#@printf "startint qwtw; current path: %s\n\n" ENV["PATH"]
 #	if is_windows()
 	if oss == 1
 		libName = "qwtwc"
