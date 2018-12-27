@@ -8,15 +8,19 @@ using Libdl
 =#
 
 oss = 0;
-
-@static if Sys.iswindows()
-	@printf "\t Windows detected\n"
-	#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
-	oss = 1;
-else
-	@printf "\t non-Windows detected\n"
-	oss = 2;
+function __init__()
+	@static if Sys.iswindows()
+		@printf "\t Windows detected\n"
+		#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+		oss = 1;
+	else
+		@printf "\t non-Windows detected\n"
+		oss = 2;
+	end
+	
+	qwtwStart((Int64)(0))
 end
+
 
 # DLLs and function handles below:
 qwtwLibHandle = 0
