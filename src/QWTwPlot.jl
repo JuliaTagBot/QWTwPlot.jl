@@ -10,12 +10,12 @@ using Libdl
 oss = 0;
 function __init__()
 	@static if Sys.iswindows()
-		@printf "\t Windows detected\n"
+		@printf "Windows detected\n"
 		#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
-		oss = 1;
+		global oss = 1;
 	else
 		@printf "\t non-Windows detected\n"
-		oss = 2;
+		global oss = 2;
 	end
 	
 	qwtwStart((Int64)(0))
@@ -64,9 +64,10 @@ function qwtwStart(debugMode = 0)
 		return
 	end
 	qwtwStop()
+	@printf "loading %s; oss = %d \n" libName oss
 	qwtwLibHandle = Libdl.dlopen(libName)
 	qwtwFigureH = Libdl.dlsym(qwtwLibHandle, "qwtfigure")
-	qwtwFigure3DH = Libdl.dlsym(qwtwLibHandle, "qwtfigure3d")
+	#qwtwFigure3DH = Libdl.dlsym(qwtwLibHandle, "qwtfigure3d")
 	
 	try
 		qwtwTopviewH = Libdl.dlsym(qwtwLibHandle, "topview")
@@ -77,7 +78,7 @@ function qwtwStart(debugMode = 0)
 	qwtwsetimpstatusH = Libdl.dlsym(qwtwLibHandle, "qwtsetimpstatus")
 	qwtwCLearH = Libdl.dlsym(qwtwLibHandle, "qwtclear")
 	qwtwPlotH = Libdl.dlsym(qwtwLibHandle, "qwtplot")
-	qwtwPlot3DH = Libdl.dlsym(qwtwLibHandle, "qwtplot3d")
+	#qwtwPlot3DH = Libdl.dlsym(qwtwLibHandle, "qwtplot3d")
 	qwtwPlot2H = Libdl.dlsym(qwtwLibHandle, "qwtplot2")
 	qwtwXlabelH = Libdl.dlsym(qwtwLibHandle, "qwtxlabel")
 	qwtwYlabelH = Libdl.dlsym(qwtwLibHandle, "qwtylabel")
@@ -111,14 +112,12 @@ function qwtwStop()
 end
 
 # return version info (as string)
-function qversion()
+function qversion() :: String
 	global qwtwVersionH
-	#v =  Array{Int8}(128)
-	v = zeros(Int8, 128)
-	ccall(qwtwVersionH, Int32, (Ptr{Int8},), v);
+	v = zeros(UInt8, 256)
+	ccall(qwtwVersionH, Int32, (Ptr{UInt8}, Int32), v, 255);
 	#return bytestring(pointer(v))
 	cmd = unsafe_string(pointer(v));
-
 
 	return cmd
 end;
@@ -148,10 +147,10 @@ function qfmap(n)
 end;
 
 # create a new  window to draw a 3D points (QT engine)
-function qf3d(n)
-	global qwtwFigure3DH
-	ccall(qwtwFigure3DH, Cvoid, (Int32,), n);
-end;
+#function qf3d(n)
+#	global qwtwFigure3DH
+#	ccall(qwtwFigure3DH, Cvoid, (Int32,), n);
+#end;
 
 #=  set up an importance status for next lines. looks like '0' means 'not important'
 'not important' will not participate in 'clipping'
@@ -220,19 +219,19 @@ end;
 
 # draw symbols in 3D space
 # currently style and 'w' are not used
-function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
-	 		name::String, style::String, w, time::Vector{Float64})
-	global qwtwPlotH
-	@assert (length(x) == length(y))
-	n = length(x)
-	ww::Int32 = w;
-	ccall(qwtwPlot3DH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
-			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32,  Ptr{Float64}),
-		x, y, z, n, name, style, 1, ww, time);
-	sleep(0.025)
-
-end;
-
+#function qplot3d(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
+#	 		name::String, style::String, w, time::Vector{Float64})
+#	global qwtwPlotH
+#	@assert (length(x) == length(y))
+#	n = length(x)
+#	ww::Int32 = w;
+#	ccall(qwtwPlot3DH, Cvoid, (Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+#			Int32, Ptr{UInt8}, Ptr{UInt8}, Int32, Int32,  Ptr{Float64}),
+#		x, y, z, n, name, style, 1, ww, time);
+#	sleep(0.025)
+#
+#end;
+#
 
 
 function qEnableCoordBroadcast(x::Vector{Float64}, y::Vector{Float64}, z::Vector{Float64},
@@ -311,7 +310,7 @@ end;
 export qfigure, qfmap, qsetmode, qplot, qplot1, qplot2, qplot2p, qxlabel,  qylabel, qtitle
 export qimportant, qclear, qwtwStart, qwtwStop, qversion, qsmw
 export traceit
-export qplot3d, qf3d, qEnableCoordBroadcast, qDisableCoordBroadcast
-
+export  qEnableCoordBroadcast, qDisableCoordBroadcast
+#export qplot3d, qf3d,
 
 end # module
