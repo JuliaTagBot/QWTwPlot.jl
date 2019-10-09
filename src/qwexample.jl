@@ -4,8 +4,8 @@
 #   also, useful page located here: https://github.com/ig-or/QWTwPlot.jl/wiki/qwtw-library-features
 #
 
-using QWTwPlot
-qwtwStart() # start 'qwtwc' library
+using QWTwPlot # start 'qwtwc' library
+
 
 # draw thin blue 'sinus':
 tMax = 10. # let it be `maximum time`

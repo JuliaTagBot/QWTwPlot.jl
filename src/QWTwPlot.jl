@@ -11,7 +11,7 @@ oss = 0;
 function __init__()
 	@static if Sys.iswindows()
 		@printf "Windows detected\n"
-		#ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
+		ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
 		global oss = 1;
 	else
 		@printf "\t non-Windows detected\n"
@@ -25,19 +25,20 @@ end
 # DLLs and function handles below:
 qwtwLibHandle = 0
 qwtwFigureH = 0
-qwtwFigure3DH = 0
+#qwtwFigure3DH = 0
 qwtwTopviewH = 0
 qwtwsetimpstatusH = 0
 qwtwCLearH = 0
 qwtwPlotH = 0
 qwtwPlot2H = 0
-qwtwPlot3DH = 0
+#qwtwPlot3DH = 0
 qwtwXlabelH = 0
 qwtwYlabelH = 0
 qwywTitleH = 0
 qwtwVersionH = 0
 qwtwMWShowH = 0
 qwtEnableBroadcastH = 0
+qwtStartH = 0
 
 # start qwtw "C" library and attach handlers to it:
 function qwtwStart(debugMode = 0)
@@ -59,6 +60,7 @@ function qwtwStart(debugMode = 0)
 	global qwtwLibHandle, qwtwFigureH, qwtwTopviewH,  qwtwsetimpstatusH, qwtwCLearH, qwtwPlotH
 	global qwtwPlot2H, qwtwXlabelH, qwtwYlabelH, qwywTitleH, qwtwVersionH, qwtwMWShowH
 	global qwtwPlot3DH, qwtwFigure3DH, qwtEnableBroadcastH, qwtDisableBroadcastH
+	global qwtStartH
 
 	if qwtwLibHandle != 0 # looks like we already started
 		return
@@ -72,7 +74,7 @@ function qwtwStart(debugMode = 0)
 	try
 		qwtwTopviewH = Libdl.dlsym(qwtwLibHandle, "topview")
 	catch
-		@printf "WARNING: topview disabled\n"
+		@printf "WARNING: topview functions disabled\n"
 	end
 	
 	qwtwsetimpstatusH = Libdl.dlsym(qwtwLibHandle, "qwtsetimpstatus")
@@ -85,6 +87,7 @@ function qwtwStart(debugMode = 0)
 	qwywTitleH = Libdl.dlsym(qwtwLibHandle, "qwttitle")
 	qwtwVersionH = Libdl.dlsym(qwtwLibHandle, "qwtversion")
 	qwtwMWShowH = Libdl.dlsym(qwtwLibHandle, "qwtshowmw")
+	qwtStartH = Libdl.dlsym(qwtwLibHandle, "qtstart")
 	
 	try
 		qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
@@ -92,7 +95,8 @@ function qwtwStart(debugMode = 0)
 	catch
 		@printf "WARNING: UDP broacast disabled\n"
 	end
-
+	
+	ccall(qwtStartH, Cvoid, ()); # very important to call this in the very beginning
 
 	version = qversion();
 	println(version);
