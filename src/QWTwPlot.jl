@@ -3,6 +3,7 @@ __precompile__(true)
 module QWTwPlot
 using Printf
 using Libdl
+
 #=  this code below should
 	handle OS differences
 =#
@@ -93,7 +94,7 @@ function qwtwStart(debugMode = 0)
 		qwtEnableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtEnableCoordBroadcast")
 		qwtDisableBroadcastH = Libdl.dlsym(qwtwLibHandle, "qwtDisableCoordBroadcast")
 	catch
-		@printf "WARNING: UDP broacast disabled\n"
+		@printf "WARNING: UDP broacast disabled (old qwtwc detected)\n"
 	end
 	
 	ccall(qwtStartH, Cvoid, ()); # very important to call this in the very beginning
@@ -261,10 +262,6 @@ function qDisableCoordBroadcast()
 	sleep(0.025);
 	
 end;
-
-
-
-
 
 
 
