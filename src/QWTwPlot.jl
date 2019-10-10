@@ -19,7 +19,7 @@ function __init__()
 		global oss = 2;
 	end
 	
-	qwtwStart((Int64)(0))
+	#qwtwStart((Int64)(0))
 end
 
 
@@ -43,7 +43,7 @@ qwtStartH = 0
 
 # start qwtw "C" library and attach handlers to it:
 function qwtwStart(debugMode = 0)
-
+	global oss;
 	libName = "nolib"
 	if oss == 1
 		ENV["PATH"]=ENV["ALLUSERSPROFILE"]*"\\qwtw;"*ENV["PATH"];
